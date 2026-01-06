@@ -20,7 +20,6 @@ class TestContextWindowManager(unittest.TestCase):
         manager.add_message("How are you?", 4)
         manager.add_message("Tell me a story", 6)
 
-        # "Hi" should be removed to stay within token budget
         self.assertEqual(manager.current_tokens, 10)
         self.assertEqual(
             manager.get_context(),
@@ -34,7 +33,6 @@ class TestContextWindowManager(unittest.TestCase):
         manager.add_message("B", 3)
         manager.add_message("C", 4)
 
-        # Window should remove A and B
         self.assertEqual(manager.current_tokens, 4)
         self.assertEqual(manager.get_context(), ["C"])
 
@@ -44,10 +42,22 @@ class TestContextWindowManager(unittest.TestCase):
         manager.add_message("Small", 2)
         manager.add_message("Too big", 10)
 
-        # Only the large message remains after pruning
         self.assertEqual(manager.current_tokens, 10)
         self.assertEqual(manager.get_context(), ["Too big"])
 
+    # 🔹 NEW TEST: Priority-aware pruning
+    def test_priority_pruning(self):
+        manager = ContextWindowManager(max_tokens=20)
 
-if __name__ == "__main__":
-    unittest.main()
+        manager.add_message("system", 5, role="system", priority=3)
+        manager.add_message("user", 10, role="user", priority=2)
+        manager.add_message("assistant", 10, role="assistant", priority=1)
+
+        context = manager.get_context()
+
+        self.assertNotIn("assistant", context)
+        self.assertIn("system", context)
+        self.assertIn("user", context)
+
+
+if __name__ == "
