@@ -1,17 +1,17 @@
-### LLM Context Window Manager
-## Overview
+## LLM Context Window Manager
+### Overview
 
 Large Language Models operate under strict token limits, making naïve context truncation unreliable in real-world applications. This project implements a **context-aware memory manager** that applies **sliding window algorithms** to maintain relevant conversation history while enforcing token constraints.
 
 Instead of arbitrarily dropping messages, the system incrementally expands and prunes context using clear validity rules, resulting in stable, predictable, and production-ready LLM behavior.
 
-## Problem Statement
+### Problem Statement
 
 In production systems, conversation history grows unbounded while model context windows remain fixed. Common strategies like “last-N messages” often discard critical information, causing hallucinations, loss of coherence, and poor user experience.
 
 This project reframes context management as a **constrained window optimization problem**, inspired by classic sliding window techniques from algorithm design.
 
-## Core Idea
+### Core Idea
 
 Conversation history is treated as a **variable-size sliding window**:
 
@@ -25,7 +25,7 @@ Conversation history is treated as a **variable-size sliding window**:
 
 This mirrors sliding window patterns used in problems like longest valid substring or minimum window optimization.
 
-## System Design
+### System Design
 
 1. Incoming messages are appended to a conversation buffer
 
@@ -37,7 +37,7 @@ This mirrors sliding window patterns used in problems like longest valid substri
 
 This guarantees the model always receives a valid and coherent context.
 
-## Why Sliding Window?
+### Why Sliding Window?
 
 Sliding window logic is a natural fit because:
 
@@ -47,7 +47,7 @@ Sliding window logic is a natural fit because:
 
 3. Recomputing context from scratch is inefficient
 
-## Key Features
+### Key Features
 
 1. Token-aware context management
 
@@ -57,7 +57,7 @@ Sliding window logic is a natural fit because:
 
 4. Modular design for LLM API integration
 
-## Example Use Cases
+### Example Use Cases
 
 1. Chat-based AI assistants
 
@@ -67,7 +67,7 @@ Sliding window logic is a natural fit because:
 
 4. Multi-turn decision support systems
 
-## Tech Stack
+### Tech Stack
 
 1. Python
 
@@ -75,6 +75,6 @@ Sliding window logic is a natural fit because:
 
 3. Modular memory management components
 
-## Learning Outcome
+### Learning Outcome
 
 This project demonstrates how classic algorithmic techniques can be applied to real-world AI system design, bridging interview-style problem solving with production constraints.
